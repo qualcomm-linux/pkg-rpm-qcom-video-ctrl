@@ -34,6 +34,11 @@ concurrency:
 
 jobs:
   build:
+    runs-on:
+      group: GHA-Platform-Prd-SelfHosted-RG
+      labels:
+        - self-hosted
+        - platform-prd-u2404-arm64-large-od-ephem
     uses: qualcomm-linux/qcom-rpm-utils/.github/workflows/pkg-build-reusable-workflow.yml@main
     with:
       qcom-rpm-utils-ref: main
