@@ -148,3 +148,4 @@ sed -i -e 's|^libdir=.*|libdir=%{_libdir}|' \
   iot-core-algs/qti-video-ctrl/debian
 - Package the qcom-video-ctrl_1.0.1_armv8a prebuilt binary drop
 - Ship /etc/video-ctrl.ini as config(noreplace)
+
