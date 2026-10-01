@@ -2,101 +2,89 @@
 Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 SPDX-License-Identifier: BSD-3-Clause
 -->
-# Package branch — CentOS 10 Stream (`c10s`)
+# pkg-rpm-qcom-video-ctrl
 
-**This is the branch you work on.** It holds your package's spec file and
-`sources` pointer, plus the CI workflows that build and publish them.
+RPM packaging for the Qualcomm Linux smart video codec control library and
+development files.
 
-Following the Fedora/CentOS **dist-git** convention, each distro stream gets its
-own branch, and the packaging files live at the branch root:
+This repository contains RPM packaging rules for the `qcom-video-ctrl`
+prebuilt binary release. It builds the `libVideoCtrl` runtime library, the
+public `videoctrl.h` header, `pkg-config` metadata, and the
+`/etc/video-ctrl.ini` runtime configuration used by Qualcomm Linux smart video
+encoding consumers.
 
-| Branch | Stream | Contents |
-|---|---|---|
-| `main` | — | Template docs, onboarding guide, community files. Nothing is built here. |
-| **`c10s`** | CentOS 10 Stream | **This branch.** Your spec + `sources` + workflows. |
+The prebuilt archive is fetched during the RPM build from Qualcomm Software
+Center. This repository contains no compiled libraries, binaries, or source
+archives. The `c10s` branch contains the RPM packaging files, while the `main`
+branch contains repository documentation and workflow support files.
 
-Full onboarding guide, configuration reference, and troubleshooting live on
-[`main`](../../tree/main) — see its `README.md` and `docs/workflows.md`.
+## Repository Layout
 
----
+| File | Purpose |
+|---|---|
+| `qcom-video-ctrl.spec` | Builds the runtime and development RPM packages. |
+| `sources` | SHA-512 checksum for the prebuilt `qcom-video-ctrl` archive. |
+| `.github/workflows/build-on-pr.yml` | Builds the RPM packages for pull requests. |
+| `.github/workflows/pkg-release.yml` | Builds and publishes release RPMs. |
+| `README.md` | Package and repository documentation. |
+| `LICENSE.txt` | License for the RPM packaging repository. |
 
-## Layout
+The vendor archive is not committed to this repository. `Source0` in the spec
+points to the Qualcomm Software Center artifact, and the checksum in `sources`
+is verified before the RPM is built.
 
-```
-mypackage.spec.example   # rename to <your-component>.spec
-sources.example          # rename to sources
-.github/workflows/       # build-on-pr.yml, pkg-release.yml
-```
+## Packages
 
-The two starter files carry a `.example` suffix on purpose. The build expects
-**exactly one** `*.spec` at the root, so the suffix keeps the skeleton invisible
-to CI until you rename it — otherwise a fresh repo's first PR would fail with
-`Multiple spec files`.
+### `qcom-video-ctrl`
 
----
+Runtime package containing the `libVideoCtrl` shared library, its
+`/etc/video-ctrl.ini` configuration file, and the package documentation. The
+library implements bitrate, frame-rate, GOP-length, ROI-tracking, and frame-drop
+decision logic used by Qualcomm smart video encoding consumers.
 
-## Getting started
+The package is built for `aarch64` and depends on `qcom-fastcv-binaries` for the
+FastCV runtime required by `libVideoCtrl`.
 
-### 1. Rename the starter files
+### `qcom-video-ctrl-devel`
+
+Development package providing the public
+`/usr/include/iot-core-algs/videoctrl.h` header, the
+`/usr/lib64/pkgconfig/qcom-video-ctrl.pc` file, and the unversioned linker
+symlink needed to build applications against `libVideoCtrl`.
+
+The packages contain prebuilt vendor binaries; the RPM build does not compile
+the library or generate debug symbols.
+
+## Installation
+
+Install the runtime and development packages from the configured CentOS Stream
+10 repository:
 
 ```bash
-git mv mypackage.spec.example <your-component>.spec
-git mv sources.example sources
+sudo dnf install -y qcom-video-ctrl qcom-video-ctrl-devel
 ```
 
-### 2. Edit the spec
+## Updating the Package Version
 
-Set `Name:`, `Version:`, `Summary:`, `License:`, the build/install sections, and
-`%files`. `Source0:` must be a real, fetchable URL whose **filename matches the
-`sources` entry**:
+1. Update `Version:` in `qcom-video-ctrl.spec` and update `Source0` if the
+   vendor archive path changes. The archive filename must remain
+   `qcom-video-ctrl_<version>_armv8a.tar.gz`.
+2. Confirm that the staged archive still contains the files validated by the
+   `%prep` checks in the spec.
+3. Regenerate the source checksum:
 
-```
-Source0: https://github.com/<org>/<proj>/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
-```
-
-### 3. Record the tarball checksum
-
-**The tarball is never committed to git.** Only its checksum is:
-
-```bash
-sha512sum --tag <your-component>-1.0.tar.gz > sources
-```
-
-which yields a line like:
-
-```
-SHA512 (mycomponent-1.0.tar.gz) = 3a7bd3e2360a3d29eea436fcfb7e44c735d117c...
-```
-
-### 4. Open a PR against this branch
-
-`build-on-pr` fetches the tarball (from the lookaside cache, or from the spec's
-`Source` URL on a cache miss), verifies the checksum, and builds the RPM(s).
-Download them from the run's **Artifacts**.
-
-
-### 5. Release
-
-**Actions → Release → Run workflow**, selecting this branch. A reviewer approves
-the `pkg-release-approval` gate, then the RPM(s) publish to Artifactory.
-
----
-
-## Updating the version
-
-Two edits, every time:
-
-1. Bump `Version:` in the spec (and the `Source0:` URL if its path changed).
-2. Recompute the checksum:
    ```bash
-   sha512sum --tag <your-component>-<newversion>.tar.gz > sources
+   sha512sum --tag qcom-video-ctrl_<version>_armv8a.tar.gz > sources
    ```
 
-Commit both, open a PR, merge, then run **Release**. The first release fetches
-the new upstream tarball, verifies it, and caches it back automatically.
-
----
+4. Commit the spec and `sources`, then open a pull request against `c10s`.
+5. After the pull request is merged, run `pkg-release.yml` to publish the
+   RPMs.
 
 ## License
-This project is licensed under the terms described in
-LICENSE.txt.
+
+This packaging repository is licensed under the BSD 3-Clause License. See
+[LICENSE.txt](LICENSE.txt) for the complete license text.
+
+The vendor binary payload is distributed under Qualcomm's binary license. The
+`LICENSE.qcom-2` file from the vendor archive is included in the runtime RPM.
