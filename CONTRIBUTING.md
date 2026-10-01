@@ -1,76 +1,82 @@
-# Contributing to <REPLACE-ME>
+# Contributing to pkg-rpm-qcom-video-ctrl
 
-Hi there!
-We’re thrilled that you’d like to contribute to this project.
-Your help is essential for keeping this project great and for making it better.
+Thank you for your interest in contributing to this project. Contributions
+that improve the RPM metadata, packaging workflows, or project documentation
+are welcome.
 
-## Branching Strategy
+## Branching strategy
 
-Development happens directly on branch main. Open a PR targeting main
+This repository follows the Fedora/CentOS dist-git branch model:
+
+- `main` contains repository documentation and workflow support files.
+- `c10s` contains the CentOS 10 Stream package spec and `sources` file.
+
+Target documentation and workflow changes at `main`. Target package and spec
+changes at `c10s`.
 
 ## Submitting a pull request
 
-1. Please read our [code of conduct](CODE-OF-CONDUCT.md) and [license](LICENSE.txt).
-1. [Fork](https://github.com/qualcomm-linux/pkg-template/fork) and clone the repository.
+1. Read the [code of conduct](CODE-OF-CONDUCT.md) and
+   [license](LICENSE.txt).
+2. Fork and clone the repository:
 
-    ```bash
-    git clone https://github.com/qualcomm-linux/pkg-template.git
-    ```
+   ```bash
+   git clone https://github.com/qualcomm-linux/pkg-rpm-qcom-video-ctrl.git
+   cd pkg-rpm-qcom-video-ctrl
+   ```
 
-1. Create a new branch based on `main`:
+3. Create a topic branch from the branch you intend to update:
 
-    ```bash
-    git checkout -b <my-branch-name> main
-    ```
+   ```bash
+   git checkout -b <my-branch-name> <target-branch>
+   ```
 
-1. Create an upstream `remote` to make it easier to keep your branches up-to-date:
+4. Add an upstream remote so you can keep your branch synchronized:
 
-    ```bash
-    git remote add upstream https://github.com/qualcomm/<REPLACE-ME>.git
-    ```
+   ```bash
+   git remote add upstream https://github.com/qualcomm-linux/pkg-rpm-qcom-video-ctrl.git
+   ```
 
-1. Make your changes, add tests, and make sure the tests still pass.
-1. Commit your changes using the [DCO](https://developercertificate.org/). You can attest to the DCO by commiting with the **-s** or **--signoff** options or manually adding the "Signed-off-by":
+5. Make the change. For package changes, keep the spec and `sources` file in
+   sync and use the pull-request build to verify the RPM.
+6. Commit using the Developer Certificate of Origin (DCO) sign-off:
 
-    ```bash
-    git commit -s -m "Really useful commit message"`
-    ```
+   ```bash
+   git commit -s -m "Describe the change"
+   ```
 
-1. After committing your changes on the topic branch, sync it with the upstream branch:
+7. Rebase your topic branch on the target branch before submitting it:
 
-    ```bash
-    git pull --rebase upstream main
-    ```
+   ```bash
+   git pull --rebase upstream <target-branch>
+   ```
 
-1. Push to your fork.
+8. Push the branch to your fork:
 
-    ```bash
-    git push -u origin <my-branch-name>
-    ```
+   ```bash
+   git push -u origin <my-branch-name>
+   ```
 
-    The `-u` is shorthand for `--set-upstream`. This will set up the tracking reference so subsequent runs of `git push` or `git pull` can omit the remote and branch.
+9. Open a pull request against the appropriate target branch. Keep each pull
+   request focused on one logical change.
 
-1. [Submit a pull request](https://github.com/qualcomm/<REPLACE-ME>/pulls) from your branch to `main`.
-1. Pat yourself on the back and wait for your pull request to be reviewed.
+## Security analysis of pull requests
 
-## Security Analysis of Pull Requests
+Pull requests from external contributors may be automatically scanned with
+[Semgrep](https://semgrep.dev/) to identify insecure patterns and potential
+security issues.
 
-To maintain the security and integrity of this project, all pull requests from external contributors are automatically scanned using [Semgrep](https://github.com/semgrep/semgrep) to detect insecure coding patterns and potential security flaws.
+If the analysis reports an issue, resolve it or explain the finding before the
+pull request is merged. The ruleset may evolve as security guidance and known
+risks change.
 
-**Static Analysis with Semgrep:**  We use Semgrep to perform lightweight, fast static analysis on every PR. This helps identify risky code patterns and logic flaws early in the development process.
+## Contribution guidelines
 
-**Contributor Responsibility:** If any issues are flagged, contributors are expected to resolve them before the PR can be merged.
-
-**Continuous Improvement:** Our Semgrep ruleset evolves over time to reflect best practices and emerging security concerns.
-
-By submitting a PR, you agree to participate in this process and help us keep the project secure for everyone.
-
-
-Here are a few things you can do that will increase the likelihood of your pull request to be accepted:
-
-- Follow the existing style where possible. **INSERT LINK TO STYLE, e.g. PEP8 for python**
-- Write tests.
-- Keep your change as focused as possible.
-  If you want to make multiple independent changes, please consider submitting them as separate pull requests.
-- Write a [good commit message](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
-- It's a good idea to arrange a discussion with other developers to ensure there is consensus on large features, architecture changes, and other core code changes. PR reviews will go much faster when there are no surprises.
+- Follow the existing documentation and RPM spec style.
+- Keep changes focused; submit independent changes as separate pull requests.
+- Update documentation when behavior, packaging requirements, or workflows
+  change.
+- Include relevant validation results in the pull request description.
+- Use a clear commit message; see [A Note About Git Commit
+  Messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
+  for guidance.
