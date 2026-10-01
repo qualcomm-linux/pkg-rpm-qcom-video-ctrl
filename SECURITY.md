@@ -1,31 +1,31 @@
-How to Report a Potential Vulnerability?
-========================================
+# Security Policy
 
-If you would like to report a public issue (for example, one with a released
-CVE number), please report it as a
-[GitHub issue](https://github.com/qualcomm/REPLACE-ME/issues/new).
-If you have a patch ready, submit it following the same procedure as any
-other patch as described in [CONTRIBUTING.md](CONTRIBUTING.md).
+## Reporting a potential vulnerability
 
-If you are dealing with a not-yet released or urgent issue, please contact us
-via our [Product Security team](mailto:product-security@qualcomm.com) or
-see our
-[Report a Bug](https://www.qualcomm.com/company/product-security/report-a-bug)
-page. Please include the following details while reporting a vulnerability:
+Do not disclose sensitive vulnerability details in a public issue. For a public
+or already-released issue, including one with an assigned CVE, use the
+[GitHub issue tracker](https://github.com/qualcomm-linux/pkg-rpm-qcom-video-ctrl/issues/new).
+If you have a patch ready, submit it using the process in
+[CONTRIBUTING.md](CONTRIBUTING.md).
+
+For an unreleased or urgent vulnerability, contact the
+[Qualcomm Product Security team](mailto:product-security@qualcomm.com) or use
+the [Qualcomm Report a Bug](https://www.qualcomm.com/company/product-security/report-a-bug)
+page. Include the following information where possible:
+
 - Description of the vulnerability
 - Steps to reproduce
-- Affected versions
+- Affected versions or package releases
 - Potential impact
-- Any relevant logs or screenshots
+- Relevant logs, traces, or screenshots
 
-## Coordinated Disclosure
+## Coordinated disclosure
 
 We follow a Coordinated Vulnerability Disclosure (CVD) process:
 
-- **Initial Response**: We will acknowledge your report within 48 hours.
-
-- **Investigation**: Our team will investigate the issue and provide updates.
-
-- **Resolution**: We will work with you to resolve the issue and prepare a fix.
-
-- **Disclosure**: Once the fix is ready, we will disclose the vulnerability and notify affected users.
+- **Initial response:** We acknowledge reports within 48 hours.
+- **Investigation:** We investigate the report and provide updates as
+  appropriate.
+- **Resolution:** We work with the reporter to develop and validate a fix.
+- **Disclosure:** Once the fix is ready, we disclose the issue and notify
+  affected users as appropriate.
